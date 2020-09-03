@@ -47,8 +47,10 @@ storefront-dev:
 docker build -t js-core-dev_test ./build/js-core-dev
 cd prestashop/themes
 docker run -it -d --name prestashop_js-core-dev_test -v `pwd`:/usr/src/app js-core-dev_test /bin/bash
+docker exec prestashop_js-core-dev_test npm run build
 
 docker build -t storefront-dev_test ./build/storefront-dev
 cd prestashop/themes/storefront-dev
 docker run -it -d --name prestashop_storefront-dev_test -v `pwd`:/usr/src/app storefront-dev_test /bin/bash
+docker exec prestashop_storefront-dev_test npm run watch
 ```

@@ -22,71 +22,66 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  */
-const webpack = require('webpack');
-const path = require('path');
+const webpack = require("webpack");
+const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 let config = {
   entry: {
-    main: [
-      './app/_dev/js/theme.js',
-      './app/_dev/css/theme.scss'
-    ]
+    main: ["./app/_dev/js/theme.js", "./app/_dev/css/theme.scss"],
   },
   output: {
-    path: path.resolve(__dirname, 'app/assets/js'),
-    filename: 'theme.js'
+    path: path.resolve(__dirname, "app/assets/js"),
+    filename: "theme.js",
   },
   module: {
     rules: [
       {
         test: /\.js/,
-        loader: 'babel-loader'
+        loader: "babel-loader",
       },
       {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
+          fallback: "style-loader",
           use: [
             {
-              loader: 'css-loader',
+              loader: "css-loader",
               options: {
-                minimize: true
-              }
+                minimize: true,
+              },
             },
-            'postcss-loader',
-            'sass-loader'
-          ]
-        })
+            "postcss-loader",
+            "sass-loader",
+          ],
+        }),
       },
       {
         test: /.(png|woff(2)?|eot|ttf|svg|gif)(\?[a-z0-9=\.]+)?$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {
-              name: '../css/[hash].[ext]'
-            }
-          }
-        ]
+              name: "../css/[hash].[ext]",
+            },
+          },
+        ],
       },
       {
-        test : /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
-      }
-    ]
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"],
+      },
+    ],
   },
   externals: {
-    prestashop: 'prestashop',
-    $: '$',
-    jquery: 'jQuery'
+    prestashop: "prestashop",
+    $: "$",
+    jquery: "jQuery",
   },
-  plugins: [
-    new ExtractTextPlugin(path.join('..', 'css', 'theme.css'))
-  ]
+  plugins: [new ExtractTextPlugin(path.join("..", "css", "theme.css"))],
 };
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   config.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: false,
@@ -96,12 +91,12 @@ if (process.env.NODE_ENV === 'production') {
         booleans: true,
         if_return: true,
         join_vars: true,
-        drop_console: true
+        drop_console: true,
       },
       output: {
-        comments: false
+        comments: false,
       },
-      minimize: true
+      minimize: true,
     })
   );
 }

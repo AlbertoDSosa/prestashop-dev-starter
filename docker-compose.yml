@@ -41,7 +41,7 @@ services:
       DB_NAME: my_prestashop_db
       APACHE_RUN_USER: my_local_user
       APACHE_RUN_GROUP: my_local_user
-      XDEBUG_CONFIG: remote_host=<your_local_host> idekey=<ide_key>
+      XDEBUG_CONFIG: remote_host=<your_local_host>
   storefront-dev:
     build: ./build/storefront-dev
     volumes:
