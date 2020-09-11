@@ -1,3 +1,0 @@
-# PrestaShop Starter Theme
-
-
