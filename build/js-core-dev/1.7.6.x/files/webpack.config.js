@@ -23,35 +23,32 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  */
 module.exports = (env, argv) => {
-
-  const path = require('path');
-  const mode = argv.mode || 'production';
+  const path = require("path");
+  const mode = argv.mode || "production";
 
   return {
     mode: mode,
-    entry: [
-      './app/_core/js/theme.js'
-    ],
+    entry: ["./app/_core/js/theme.js"],
     output: {
-      path: path.resolve(__dirname, 'app'),
-      filename: 'core.js'
+      path: path.resolve(__dirname, "app"),
+      filename: "core.js",
     },
     module: {
       rules: [
         {
           test: /\.js$/,
           use: {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: {
-              presets: ['@babel/preset-env']
-            }
+              presets: ["@babel/preset-env"],
+            },
           },
         },
-      ]
+      ],
     },
     externals: {
-      prestashop: 'prestashop'
+      prestashop: "prestashop",
     },
-    devtool: 'source-map'
+    devtool: "source-map",
   };
 };

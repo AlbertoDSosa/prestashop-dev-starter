@@ -1,56 +1,35 @@
 # Prestashop Local Development Environment
 
 ```bash
+# Run containers
+docker-compose up -d
+
 # Add permissions
-sudo chown albertodsosa:albertodsosa -R prestashop/
+sudo chown <local_user>:<local_user> -R prestashop/
 rm -rf prestashop/install
 
-# optional
+# Optional permissions
 chmod -R 775 prestashop/
 chmod -R g+s prestashop/
+
+chmod +w -R admin-dev/autoupgrade app/config app/logs app/Resources/translations cache config download img log mails modules themes translations upload var
 
 # Rename admin folder
 cd prestashop/
 mv admin admin-dev
-```
 
-```bash
-chmod +w -R admin-dev/autoupgrade app/config app/logs app/Resources/translations cache config download img log mails modules themes translations upload var
+# Build CSS and Javascript
 
-sudo chgrp -R www-data /prestashop/
-sudo chmod -R g+w /prestashop/
-sudo find /prestashop/ -type d -exec chmod 2775 {} \;
-sudo find /prestashop/ -type f -exec chmod ug+rw {} \;
-
-sudo usermod -a -G www-data albertodsosa
-sudo usermod -a -G www-data otrousuario
-```
-
-## Build CSS and Javascript
-
-```yml
-js-core-dev:
-    build: ./build/js-core-dev
-    volumes:
-      - ./prestashop/themes:/usr/src/app
-    depends_on:
-      - prestashop
-storefront-dev:
-    build: ./build/storefront-dev
-    volumes:
-      - ./prestashop/themes/storefront-dev:/usr/src/app
-    depends_on:
-      - js-core-dev
-```
-
-```bash
-docker build -t js-core-dev_test ./build/js-core-dev
+docker build -t ps_js-core-dev_img ./build/js-core-dev/<tag>
 cd prestashop/themes
-docker run -it -d --name prestashop_js-core-dev_test -v `pwd`:/usr/src/app js-core-dev_test /bin/bash
-docker exec prestashop_js-core-dev_test npm run build
+docker run -it -d --name ps_js-core-dev_cont -v `pwd`:/usr/src/app ps_js-core-dev_img /bin/bash
+docker exec ps_js-core-dev_cont npm run build
 
-docker build -t storefront-dev_test ./build/storefront-dev
-cd prestashop/themes/storefront-dev
-docker run -it -d --name prestashop_storefront-dev_test -v `pwd`:/usr/src/app storefront-dev_test /bin/bash
-docker exec prestashop_storefront-dev_test npm run watch
+docker build -t ps_theme-dev_img ./build/theme-dev/<tag>
+cd prestashop/themes/<theme_folder>
+docker run -it -d --name ps_theme-dev_cont -v `pwd`:/usr/src/app ps_theme-dev_img /bin/bash
+docker exec -it ps_theme-dev_cont bash
+npm run build
+# or
+npm run watch
 ```
