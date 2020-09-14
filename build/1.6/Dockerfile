@@ -5,5 +5,5 @@ RUN pecl install xdebug-2.9.6 && pecl install mcrypt-1.0.3 && docker-php-ext-ena
 
 RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini
 
-RUN useradd albertodsosa
+RUN useradd <local_user> && useradd 1001
 

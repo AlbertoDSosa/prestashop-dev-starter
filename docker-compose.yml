@@ -13,10 +13,10 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
-      - PMA_ARBITRARY: 1
-      - PMA_HOST: db:3306
-      - PMA_USER: my_user
-      - PMA_PASSWORD: my_secret_pw
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db:3306
+      - PMA_USER=my_user
+      - PMA_PASSWORD=my_secret_pw
     depends_on:
       - db
     ports:
@@ -25,28 +25,23 @@ services:
       - /sessions
   prestashop:
     build: ./build/<build_tag>
-    depends_on:
-      - db
     ports:
       - "8000:80"
     volumes:
       - ./prestashop:/var/www/html
     environment:
-      PS_DEV_MODE: 1
-      PS_FOLDER_ADMIN: admin-dev
+      # PS_DEV_MODE: 1
+      # PS_FOLDER_ADMIN: admin-dev
+      APACHE_RUN_USER: my_local_user or 1001
+      APACHE_RUN_GROUP: my_local_user or 1001
       PS_DOMAIN: localhost:8000
       DB_SERVER: db:3306
       DB_USER: my_user
       DB_PASSWORD: my_secret_pw
       DB_NAME: my_prestashop_db
-      APACHE_RUN_USER: my_local_user
-      APACHE_RUN_GROUP: my_local_user
       XDEBUG_CONFIG: remote_host=<your_local_host>
-  storefront-dev:
-    build: ./build/storefront-dev
-    volumes:
-      - ./prestashop/themes/storefront-dev/:/usr/src/app
     depends_on:
-      - prestashop
+      - db
 volumes:
   db_data: {}
+
