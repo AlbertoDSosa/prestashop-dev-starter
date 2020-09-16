@@ -1,5 +1,7 @@
 # Prestashop Local Development Environment
 
+## Docker configuration
+
 ```bash
 # Run containers
 docker-compose up -d
@@ -32,4 +34,34 @@ docker exec -it ps_theme-dev_cont bash
 npm run build
 # or
 npm run watch
+```
+
+## Debug VSCode Configuration
+
+```json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen for XDebug",
+            "type": "php",
+            "request": "launch",
+            "pathMappings": {
+              "/var/www/html": "${workspaceRoot}/prestashop"
+            },
+            "port": 9000
+        },
+        {
+            "name": "Launch currently open script",
+            "type": "php",
+            "request": "launch",
+            "program": "${file}",
+            "cwd": "${fileDirname}",
+            "port": 9000
+        }
+    ]
+}
 ```
